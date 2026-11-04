@@ -1,3 +1,4 @@
+services: 
   liquibase:
     image: liquibase/liquibase:4.29
     volumes:
@@ -27,8 +28,10 @@
     volumes:
       - ./tests/entrypoints/init_postgres.sql:/docker-entrypoint-initdb.d/init_postgres.sql:cached
     command: postgres -c shared_buffers=256MB -c max_connections=200
+    ports:
+      - "5432:5432"
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "redbox"]
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "webchat"]
       interval: 1s
       timeout: 5s
       retries: 60

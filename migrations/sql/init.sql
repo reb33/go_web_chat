@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset kbar create users.users
+--changeset kbar:init.sql
 
 CREATE SCHEMA users;
 
@@ -15,7 +15,7 @@ CREATE TABLE users.groups (
     name text NOT NULL,
     created_by uuid,
     created_at timestamp DEFAULT now()
-)
+);
 
 CREATE TABLE users.users_groups (
     user_id UUID NOT NULL REFERENCES users.users(id) ON DELETE CASCADE,
@@ -25,4 +25,4 @@ CREATE TABLE users.users_groups (
     -- Составной первичный ключ гарантирует, что пользователь 
     -- не сможет вступить в одну и ту же группу дважды
     PRIMARY KEY (user_id, group_id)
-)
+);

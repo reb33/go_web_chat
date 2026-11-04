@@ -11,15 +11,18 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"web_chat/internal/infrastructure/postgres"
 	api "web_chat/internal/transport/httpserver"
+	"web_chat/internal/usecase/auth"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 )
 
 const (
 	GracefulShutdownTimeout = 5 * time.Second
 	appServerCount          = 3
-	debugPort = 9001
+	debugPort               = 9001
 )
 
 type App struct {
@@ -27,8 +30,10 @@ type App struct {
 	logger *slog.Logger
 }
 
-func NewApp(logger *slog.Logger) *App {
-	router := api.NewRouter(logger)
+func NewApp(logger *slog.Logger, dbPool *pgxpool.Pool) *App {
+	authRepo := auth.Repository(postgres.NewAuthRepo(dbPool))
+	authUseCase := auth.New(authRepo)
+	router := api.NewRouter(logger, authUseCase)
 	return &App{router: router, logger: logger}
 }
 

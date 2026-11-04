@@ -1,0 +1,65 @@
+{{define "chat"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Веб-чат</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="bg-gray-100 h-screen flex">
+
+    <!-- Левая колонка: Список групп (комнат) -->
+    <div class="w-1/4 bg-white border-r border-gray-200 flex flex-col">
+        <div class="p-4 border-b border-gray-200 font-bold text-lg text-gray-800">
+            Комнаты / Группы
+        </div>
+        <!-- Список групп (сюда HTMX будет подгружать группы) -->
+        <div id="groups-list" class="overflow-y-auto flex-1 p-4 space-y-2">
+            <!-- Пример элемента группы -->
+            <a href="#" class="block p-3 rounded-lg bg-blue-50 text-blue-700 font-medium">Общий чат</a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-gray-50 text-gray-700">Разработка на Go</a>
+        </div>
+    </div>
+
+    <!-- Правая колонка: Область чата -->
+    <div class="flex-1 flex flex-col">
+        <!-- Шапка чата -->
+        <div class="p-4 bg-white border-b border-gray-200 font-bold text-gray-800">
+            Общий чат
+        </div>
+
+        <!-- История сообщений -->
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
+            <!-- Пример сообщения от другого пользователя -->
+            <div class="flex items-start">
+                <div class="bg-white p-3 rounded-lg shadow-sm max-w-md">
+                    <span class="text-xs font-bold text-blue-600 block">alex</span>
+                    <p class="text-sm text-gray-800">Всем привет!</p>
+                </div>
+            </div>
+            <!-- Пример сообщения от себя -->
+            <div class="flex items-start justify-end">
+                <div class="bg-blue-500 p-3 rounded-lg shadow-sm max-w-md text-white">
+                    <p class="text-sm">Привет! Чат работает.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Поле ввода текста -->
+        <div class="p-4 bg-white border-t border-gray-200">
+            <form hx-post="/messages" hx-swap="beforeend" hx-target="#chat-messages" class="flex gap-2">
+                <input type="text" name="message" placeholder="Введите сообщение..." required
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" 
+                    class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-200 font-medium">
+                    Отправить
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+{{end}}

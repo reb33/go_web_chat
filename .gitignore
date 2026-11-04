@@ -19,8 +19,8 @@ go.work
 
 # Project specific local directories & files
 tmp/
-.air.toml (опционально, если хотите хранить локально, но обычно тоже можно игнорировать или коммитить)
 .DS_Store
 *.log
+.env
 
 localREADME.md
